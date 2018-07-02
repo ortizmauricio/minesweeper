@@ -1,7 +1,6 @@
 from tkinter import *
 import random
 random.seed()
-
 #Contains all tiles and their characteristics as objects
 field = []
 #Contains coordinates of mines
@@ -109,10 +108,10 @@ def onObjectClick(event, self, canvas):
 	if status.status:
 		print("This passed")
 		if self.value == 0:
-			#Recursive function
-			pass
+			recursiveUncover(self.index[0], self.index[1], canvas)
 		else:
-			if self.value != -1:
+			if self.value != -1 and self.clickable == True:
+				self.clickable = False
 				self.uncover(canvas)
 			else:
 				status.status = False
@@ -122,7 +121,21 @@ def onObjectClick(event, self, canvas):
 
 	canvas.update()
 
-	
+
+def recursiveUncover(row, col, canvas):
+	if field[row][col].value == 0 and field[row][col].clickable == True:
+		field[row][col].clickable = False
+		field[row][col].uncover(canvas)
+		if row < (len(field)-1):
+			recursiveUncover(row + 1, col, canvas)
+		if row > 0:
+			recursiveUncover(row - 1, col, canvas)
+		if col > 0:
+			recursiveUncover(row , col - 1, canvas)
+		if col < (len(field[0])-1):
+			recursiveUncover(row , col + 1, canvas)
+	else:
+		field[row][col].uncover(canvas)
 
 
 def run(width= 300, height = 300):
