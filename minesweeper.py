@@ -15,10 +15,10 @@ status = Game()
 
 #Representation of tiles
 class Mines:
-	def __init__(self, v, x, y, canvas, f):
+	def __init__(self, v, x, y, canvas, f, index):
 		self.x = x
 		self.y = y
-
+		self.index = index
 		self.clickable = True
 		self.value = v
 		self.fill = f
@@ -43,10 +43,10 @@ def createField(canvas, l, w, x = 0, y = 0):
 			x += 30
 			tmpTup = (row, col)
 			if tmpTup in mines:
-				field[row].append(Mines(-1, x, y, canvas, "red"))
+				field[row].append(Mines(-1, x, y, canvas, "red", tmpTup))
 			
 			else:
-				field[row].append(Mines(0, x, y, canvas, "grey"))
+				field[row].append(Mines(0, x, y, canvas, "grey", tmpTup))
 			
 #Goes through all objects in arrays and
 # updates value for tiles based on surrounding mines
