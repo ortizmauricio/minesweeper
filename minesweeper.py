@@ -16,11 +16,15 @@ status = Game()
 #Representation of tiles
 class Mines:
 	def __init__(self, v, x, y, canvas, f):
+		self.x = x
+		self.y = y
+
 		self.clickable = True
 		self.value = v
 		self.fill = f
-		self.visual = canvas.create_rectangle(x, y, x+30, y+30, fill = self.fill, outline = "black", width = "1")
+		self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
 		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self, canvas))
+
 
 #Generates objects in array and displays tiles
 def createField(canvas, l, w, x = 0, y = 0):
@@ -103,7 +107,7 @@ def onObjectClick(event, self, canvas):
 			pass
 		else:
 			if self.value != -1:
-				self.fill = "white"
+				self.fill = "blue"
 			else:
 				status.status = False
 				print("You lost the game!")
