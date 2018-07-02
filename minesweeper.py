@@ -10,6 +10,7 @@ class Game:
 	def __init__(self):
 		self.status = True
 		self.firstClick = True
+		self.win = 0
 
 status = Game()
 
@@ -114,17 +115,15 @@ def onObjectClick(event, self, canvas):
 				self.clickable = False
 				self.uncover(canvas)
 			elif status.firstClick == True:
-				print("first")
 				indexOfClick = self.index
 				while field[indexOfClick[0]][indexOfClick[1]].value == -1:
-					print("This ran")
 					resetData(canvas)
 				print(field[indexOfClick[0]][indexOfClick[1]].value)
-
 			else:
 				status.status = False
-				print("You lost the game!")
+				print("You lost")
 		status.firstClick = False
+		checkWin()
 		canvas.update()
 		
 	
@@ -144,6 +143,7 @@ def recursiveUncover(row, col, canvas):
 			recursiveUncover(row , col + 1, canvas)
 	else:
 		field[row][col].uncover(canvas)
+		field[row][col].clickable = False
 
 def resetData(canvas):
 	canvas.delete(ALL)
@@ -152,8 +152,16 @@ def resetData(canvas):
 	createField(canvas, 9, 9)
 	setValues(9,9)
 
-
-
+def checkWin():
+	count = 0
+	for row in range(len(field)):
+		for col in range(len(field[0])):
+			if field[row][col].clickable == False:
+				count +=1
+	print(count)
+	if (71) == count :
+		print("You won the game")
+		status.status = False
 
 def run(width= 300, height = 300):
 	def createFieldWrapper(canvas):
