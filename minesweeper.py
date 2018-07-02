@@ -6,6 +6,12 @@ random.seed()
 field = []
 #Contains coordinates of mines
 mines = []
+#Tracks whether user lost
+class Game:
+	def __init__(self):
+		self.status = True
+
+status = Game()
 
 #Representation of tiles
 class Mines:
@@ -14,7 +20,7 @@ class Mines:
 		self.value = v
 		self.fill = f
 		self.visual = canvas.create_rectangle(x, y, x+30, y+30, fill = self.fill, outline = "black", width = "1")
-		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self))
+		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self, canvas))
 
 #Generates objects in array and displays tiles
 def createField(canvas, l, w, x = 0, y = 0):
@@ -89,8 +95,25 @@ def makeMineLocation(s, l, w):
 					mines.append(mineLocation)
 					break
 
-def onObjectClick(event, self):
-	print(self.value)
+def onObjectClick(event, self, canvas):
+	if status.status:
+		print("This passed")
+		if self.value == 0:
+			#Recursive function
+			pass
+		else:
+			if self.value != -1:
+				self.fill = "white"
+			else:
+				status.status = False
+				print("You lost the game!")
+	else:
+		print("this did not pass")
+
+	canvas.update()
+
+	
+
 
 def run(width= 300, height = 300):
 	def createFieldWrapper(canvas):
