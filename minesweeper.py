@@ -107,10 +107,12 @@ def makeMineLocation(s, l, w):
 
 def onObjectClick(event, self, canvas):
 	if status.firstClick == True:
+		print("first")
 		indexOfClick = self.index
-		canvas.delete(ALL)
-		createField(canvas, 9, 9)
-		print("No longer -1")
+		print(indexOfClick[0], indexOfClick[1])
+		while field[indexOfClick[0]][indexOfClick[1]].value == -1:
+			print("This ran")
+			resetData(canvas)
 		status.firstClick = False
 
 	if status.status:
@@ -120,7 +122,7 @@ def onObjectClick(event, self, canvas):
 			if self.value != -1 and self.clickable == True:
 				self.clickable = False
 				self.uncover(canvas)
-			elif status.firstClick:
+			elif not status.firstClick:
 				status.status = False
 				print("You lost the game!")
 		canvas.update()
@@ -140,6 +142,14 @@ def recursiveUncover(row, col, canvas):
 			recursiveUncover(row , col + 1, canvas)
 	else:
 		field[row][col].uncover(canvas)
+
+def resetData(canvas):
+	canvas.delete(ALL)
+	field[:] = []
+	mines[:] = []
+	createField(canvas, 9, 9)
+
+
 
 
 def run(width= 300, height = 300):
