@@ -9,6 +9,7 @@ mines = []
 class Game:
 	def __init__(self):
 		self.status = True
+		self.firstClick = True
 
 status = Game()
 
@@ -105,21 +106,24 @@ def makeMineLocation(s, l, w):
 					break
 
 def onObjectClick(event, self, canvas):
+	if status.firstClick == True:
+		indexOfClick = self.index
+		canvas.delete(ALL)
+		createField(canvas, 9, 9)
+		print("No longer -1")
+		status.firstClick = False
+
 	if status.status:
-		print("This passed")
 		if self.value == 0:
 			recursiveUncover(self.index[0], self.index[1], canvas)
 		else:
 			if self.value != -1 and self.clickable == True:
 				self.clickable = False
 				self.uncover(canvas)
-			else:
+			elif status.firstClick:
 				status.status = False
 				print("You lost the game!")
-	else:
-		print("this did not pass")
-
-	canvas.update()
+		canvas.update()
 
 
 def recursiveUncover(row, col, canvas):
