@@ -25,6 +25,12 @@ class Mines:
 		self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
 		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self, canvas))
 
+	def uncover(self, canvas):
+		self.fill = "white"
+		self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
+		if self.value != 0:
+			self.visual2 = canvas.create_text(self.x, self.y, text = self.value, font = "Helvetica 14", anchor = NW)
+
 
 #Generates objects in array and displays tiles
 def createField(canvas, l, w, x = 0, y = 0):
@@ -107,7 +113,7 @@ def onObjectClick(event, self, canvas):
 			pass
 		else:
 			if self.value != -1:
-				self.fill = "blue"
+				self.uncover(canvas)
 			else:
 				status.status = False
 				print("You lost the game!")
