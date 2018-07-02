@@ -6,21 +6,23 @@ field = []
 mines = []
 
 def createField(l, w):
-	generateMines(w)
+	generateMines(l, w)
 
-
-def generateMines(w):
+def generateMines(l, w):
 	if w == 9:
-		for i in range(10):
+		makeMineLocation(10, l, w)
+	elif w == 16:
+		makesMineLocation(40, l, w)
+	else:
+		makesMineLocation(99, l, w)
+
+def makeMineLocation(s, l, w):
+	for i in range(s):
 			while True:
-				mineLocation = (random.randint(0,9), random.randint(0,9))
+				mineLocation = (random.randint(0,l), random.randint(0,w))
 				if mineLocation not in mines:
 					mines.append(mineLocation)
 					break
-	elif w == 16:
-		pass
-	else:
-		pass
 
 def run(width= 300, height = 300):
 
