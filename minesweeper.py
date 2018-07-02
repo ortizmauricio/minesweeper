@@ -5,6 +5,13 @@ random.seed()
 field = []
 mines = []
 
+
+class Mines:
+	def __init__(self, v, x, y):
+		clickable = True
+		value = v
+		visual = canvas.create_rectangle(x, 20, y, 20)
+
 def createField(l, w):
 	generateMines(l, w)
 	for row in range(l):
