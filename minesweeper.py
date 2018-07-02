@@ -12,7 +12,11 @@ def createField(l, w):
 def generateMines(w):
 	if w == 9:
 		for i in range(10):
-			print(i)
+			while True:
+				mineLocation = (random.randint(0,9), random.randint(0,9))
+				if mineLocation not in mines:
+					mines.append(mineLocation)
+					break
 	elif w == 16:
 		pass
 	else:
@@ -21,7 +25,7 @@ def generateMines(w):
 def run(width= 300, height = 300):
 
 	createField(9, 9)
-
+	print(mines)
 	root = Tk()
 	canvas = Canvas(root, width = width, height = height)
 	canvas.pack()
