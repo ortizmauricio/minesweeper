@@ -7,11 +7,12 @@ mines = []
 
 
 class Mines:
-	def __init__(self, v, x, y, canvas):
+	def __init__(self, v, x, y, canvas, f):
 		self.clickable = True
 		self.value = v
-		self.fill = "grey"
+		self.fill = f
 		self.visual = canvas.create_rectangle(x, y, x+30, y+30, fill = self.fill, outline = "black", width = "1")
+		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self))
 
 def createField(canvas, l, w, x = 0, y = 0):
 	generateMines(l, w)
@@ -23,10 +24,11 @@ def createField(canvas, l, w, x = 0, y = 0):
 			x += 30
 			tmpTup = (row, col)
 			if tmpTup in mines:
-				field[row].append(Mines(-1, x, y, canvas))
+				field[row].append(Mines(-1, x, y, canvas, "red"))
 			
 			else:
-				field[row].append(Mines(0, x, y, canvas))
+				field[row].append(Mines(0, x, y, canvas, "grey"))
+			
 
 def setValues(l, w):
 	for row in range(len(field)):
@@ -82,6 +84,9 @@ def makeMineLocation(s, l, w):
 					mines.append(mineLocation)
 					break
 
+def onObjectClick(event, self):
+	print(self.value)
+
 def run(width= 300, height = 300):
 	def createFieldWrapper(canvas):
 		createField(canvas, 9, 9)
@@ -91,10 +96,6 @@ def run(width= 300, height = 300):
 	canvas = Canvas(root, width = width, height = height)
 	canvas.pack()
 	createFieldWrapper(canvas)
-
-	for row in range(len(field)):
-		for col in range(len(field[row])):
-			print(field[row][col].value)
 
 	root.mainloop()
 run()
