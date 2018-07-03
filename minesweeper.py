@@ -1,11 +1,18 @@
+#Program starts running at run() function
+
+
 from tkinter import *
 import random
 random.seed()
+
+
 #Contains all tiles and their characteristics as objects
 field = []
 #Contains coordinates of mines
 mines = []
-#Tracks whether user lost
+
+#Tracks important game variables that are corresponding to
+#current game session
 class Game:
 	def __init__(self):
 		self.status = True
@@ -129,6 +136,7 @@ def setValues(l, w):
 					if field[row + 1][col + 1].value == -1:
 						field[row][col].value +=1
 
+#Flags or unflags designated tile
 def flagTile(event, self, canvas):
 	if status.status:
 		if not self.flagged:
@@ -138,6 +146,9 @@ def flagTile(event, self, canvas):
 	self.flag(canvas)
 	canvas.update()
 
+#Handles user selection of tile and either: shows number, 
+# shows empty tile and those around them, or exposes mine 
+# and calls loss message
 def onObjectClick(event, self, canvas):
 	if status.status:
 		if self.value == 0:
@@ -161,7 +172,8 @@ def onObjectClick(event, self, canvas):
 		
 
 
-
+#Recursively checks all numbered or empty tiles around selected
+#tile and uncovers them
 def recursiveUncover(row, col, canvas):
 	if field[row][col].value == 0 and field[row][col].clickable == True:
 		field[row][col].clickable = False
@@ -178,6 +190,7 @@ def recursiveUncover(row, col, canvas):
 		field[row][col].uncover(canvas)
 		field[row][col].clickable = False
 
+#Resets Canvas
 def resetData(canvas):
 	canvas.delete(ALL)
 	field.clear()
@@ -186,6 +199,7 @@ def resetData(canvas):
 	createField(canvas, status.l, status.w)
 	setValues(status.l, status.w)
 
+#Checks if user has won game and displays message if so
 def checkWin(canvas):
 	count = 0
 	for row in range(len(field)):
@@ -198,11 +212,21 @@ def checkWin(canvas):
 		canvas.update()
 		status.status = False
 
+#Window and canvas resized based on parameters
 def resizeWindow(root, canvas,h, w):
 	root.geometry( str(w)+ "x" + str(h))
 	canvas.config(height = str(h), width = str(w))
 
+'''
+This is the first function that runs. After a user selects
+a game board size. The board size is passed to the createFieldWrapper
+and the screen size is adjusted and saved along with the board size in the
+status Game object for later reference. Helper funcitons are then called
+to create the actual board.
+'''
 def run(width= 300, height = 300):
+
+
 	def createFieldWrapper(canvas, l, w):
 		status.hardReset()
 		if l == 16:
@@ -228,10 +252,13 @@ def run(width= 300, height = 300):
 		resetData(canvas)
 		canvas.update()
 
+	#Calls for board regeneration and reset of 
 	def keyPressedWrapper(event, canvas):
 		if(event.char == "r"):
 			createFieldWrapper(canvas, status.l, status.w)
 
+
+	#Default Menu Content
 	def createMenu(canvas):
 		canvas.delete(ALL)
 		canvas.create_text(width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
@@ -249,7 +276,7 @@ def run(width= 300, height = 300):
 
 	createMenu(canvas)
 
-
+	#Toolbar creation
 	menubar = Menu(root)
 	filemenu = Menu(menubar, tearoff=0)
 	filemenu.add_command(label="9x9, 10 mines", command = lambda: createFieldWrapper(canvas, 9, 9))
@@ -261,7 +288,7 @@ def run(width= 300, height = 300):
 	exitmenu = Menu(menubar, tearoff=0)
 	exitmenu.add_command(label="Exit", command=root.quit)
 	menubar.add_cascade(label="Exit", menu=exitmenu)
-	
+
 	root.bind("<Key>", lambda event: keyPressedWrapper(event, canvas))
 	root.config(menu=menubar)
 	canvas.focus_set()
