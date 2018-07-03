@@ -164,31 +164,52 @@ def checkWin():
 		status.status = False
 
 def run(width= 300, height = 300):
-	def createFieldWrapper(canvas):
-		createField(canvas, 9, 9)
-		setValues(9, 9)
+	def createFieldWrapper(canvas, l, w):
+		canvas.delete(ALL)
+		canvas.create_text(width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
+		createField(canvas, l, w)
+		setValues(l, w)
 		canvas.update()
+
+	def createMenu(canvas):
+		canvas.delete(ALL)
+		canvas.create_text(width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
+		canvas.create_text(width/2, 50, text="Instructions", fill="white", font="Helvetica 22 bold ")
+		canvas.create_text(width/2, 80, text="Press Left-Click to Reveal Squares", fill="white", font="Helvetica 16 bold ")
+		canvas.create_text(width/2, 110, text="Press Right-Click to Flag Mines", fill="white", font="Helvetica 16 bold ")
+		canvas.create_text(width/2, 140, text="Press Right-Click again to Unflag Mines", fill="white", font="Helvetica 16 bold ")
+		canvas.create_text(width/2, 170, text="Start a new Game at the top", fill="white", font="Helvetica 16 bold ")
+		canvas.update()
+
+
+
 	root = Tk()
 	
+
+
 	canvas = Canvas(root, width = width, height = height, background = "blue")
+	canvas.pack()
+
+	createMenu(canvas)
+
 
 	menubar = Menu(root)
 	filemenu = Menu(menubar, tearoff=0)
-	filemenu.add_command(label="9x9, 10 mines", command = createFieldWrapper(canvas))
+	filemenu.add_command(label="9x9, 10 mines", command = lambda: createFieldWrapper(canvas, 9, 9))
 	filemenu.add_command(label="16x16, 40 mines", command=onObjectClick)
 	filemenu.add_command(label="16x30, 99 mines", command=onObjectClick)
-
-	
 	menubar.add_cascade(label="New Game", menu=filemenu)
-	editmenu = Menu(menubar, tearoff=0)
-	editmenu.add_command(label="Exit", command=root.quit)
-	menubar.add_cascade(label="Exit", menu=editmenu)
+
+
+	exitmenu = Menu(menubar, tearoff=0)
+	exitmenu.add_command(label="Exit", command=root.quit)
+	menubar.add_cascade(label="Exit", menu=exitmenu)
 
 
 	root.config(menu=menubar)
 
 
-	canvas.pack()
+
 	
 
 	root.mainloop()
