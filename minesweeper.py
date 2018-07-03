@@ -43,7 +43,7 @@ class Mines:
 		self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
 		if self.value != 0:
 			self.visual2 = canvas.create_text(self.x, self.y, text = self.value, font = "Helvetica 14", anchor = NW)
-'''
+
 	def flag(self, canvas):
 		if self.flagged:
 			self.fill = "yellow"
@@ -51,8 +51,8 @@ class Mines:
 		else:
 			self.fill = "grey"
 			self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
-'''
-
+		canvas.tag_bind(self.visual, '<Button-2>', lambda event: flagTile(event, self, canvas))
+		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self, canvas))
 #Generates objects in array and displays tiles
 def createField(canvas, l, w, x = 0, y = 0):
 	generateMines(l, w)
@@ -137,6 +137,7 @@ def flagTile(event, self, canvas):
 		else:
 			print("Entered flagTile4")
 			self.flagged = False
+	self.flag(canvas)
 	canvas.update()
 
 def onObjectClick(event, self, canvas):
@@ -258,7 +259,7 @@ def run(width= 300, height = 300):
 	exitmenu.add_command(label="Exit", command=root.quit)
 	menubar.add_cascade(label="Exit", menu=exitmenu)
 
-
 	root.config(menu=menubar)
+	canvas.focus_set()
 	root.mainloop()
 run()
