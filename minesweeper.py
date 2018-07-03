@@ -53,6 +53,7 @@ class Mines:
 			self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
 		canvas.tag_bind(self.visual, '<Button-2>', lambda event: flagTile(event, self, canvas))
 		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self, canvas))
+
 #Generates objects in array and displays tiles
 def createField(canvas, l, w, x = 0, y = 0):
 	generateMines(l, w)
@@ -127,21 +128,15 @@ def setValues(l, w):
 						field[row][col].value +=1
 
 def flagTile(event, self, canvas):
-	print("Entered flagTile1")
 	if status.status:
-		print("Entered flagTile2")
 		if not self.flagged:
-			print("Entered flagTile3")
 			self.flagged = True
-			
 		else:
-			print("Entered flagTile4")
 			self.flagged = False
 	self.flag(canvas)
 	canvas.update()
 
 def onObjectClick(event, self, canvas):
-	print("Entered object click")
 	if status.status:
 		if self.value == 0:
 			recursiveUncover(self.index[0], self.index[1], canvas)
