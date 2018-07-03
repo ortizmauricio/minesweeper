@@ -30,17 +30,28 @@ class Mines:
 		self.y = y
 		self.index = index
 		self.clickable = True
+		self.flagged = False
 		self.value = v
 		self.fill = f
 		self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
 		canvas.tag_bind(self.visual, '<Button-1>', lambda event: onObjectClick(event, self, canvas))
+		canvas.tag_bind(self.visual, '<Button-2>', lambda event: flagTile(event, self, canvas))
+
 
 	def uncover(self, canvas):
 		self.fill = "white"
 		self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
 		if self.value != 0:
 			self.visual2 = canvas.create_text(self.x, self.y, text = self.value, font = "Helvetica 14", anchor = NW)
-
+'''
+	def flag(self, canvas):
+		if self.flagged:
+			self.fill = "yellow"
+			self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
+		else:
+			self.fill = "grey"
+			self.visual = canvas.create_rectangle(self.x, self.y, self.x+30, self.y+30, fill = self.fill, outline = "black", width = "1")
+'''
 
 #Generates objects in array and displays tiles
 def createField(canvas, l, w, x = 0, y = 0):
@@ -115,7 +126,21 @@ def setValues(l, w):
 					if field[row + 1][col + 1].value == -1:
 						field[row][col].value +=1
 
+def flagTile(event, self, canvas):
+	print("Entered flagTile1")
+	if status.status:
+		print("Entered flagTile2")
+		if not self.flagged:
+			print("Entered flagTile3")
+			self.flagged = True
+			
+		else:
+			print("Entered flagTile4")
+			self.flagged = False
+	canvas.update()
+
 def onObjectClick(event, self, canvas):
+	print("Entered object click")
 	if status.status:
 		if self.value == 0:
 			recursiveUncover(self.index[0], self.index[1], canvas)
@@ -135,7 +160,7 @@ def onObjectClick(event, self, canvas):
 		checkWin()
 		canvas.update()
 		
-	
+
 
 
 def recursiveUncover(row, col, canvas):
