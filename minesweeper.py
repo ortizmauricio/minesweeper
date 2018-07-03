@@ -48,6 +48,24 @@ def createField(canvas, l, w, x = 0, y = 0):
 			
 			else:
 				field[row].append(Mines(0, x, y, canvas, "grey", tmpTup))
+
+#Determines number of mines based on board size
+def generateMines(l, w):
+	if w == 9:
+		makeMineLocation(10, l, w)
+	elif w == 16:
+		makesMineLocation(40, l, w)
+	else:
+		makesMineLocation(99, l, w)
+
+#Generates mine coordinates based on board size
+def makeMineLocation(s, l, w):
+	for i in range(s):
+			while True:
+				mineLocation = (random.randint(0,l-1), random.randint(0,w-1))
+				if mineLocation not in mines:
+					mines.append(mineLocation)
+					break
 			
 #Goes through all objects in arrays and
 # updates value for tiles based on surrounding mines
@@ -87,24 +105,6 @@ def setValues(l, w):
 					#Check bottom right
 					if field[row + 1][col + 1].value == -1:
 						field[row][col].value +=1
-
-#Determines number of mines based on board size
-def generateMines(l, w):
-	if w == 9:
-		makeMineLocation(10, l, w)
-	elif w == 16:
-		makesMineLocation(40, l, w)
-	else:
-		makesMineLocation(99, l, w)
-
-#Generates mine coordinates based on board size
-def makeMineLocation(s, l, w):
-	for i in range(s):
-			while True:
-				mineLocation = (random.randint(0,l-1), random.randint(0,w-1))
-				if mineLocation not in mines:
-					mines.append(mineLocation)
-					break
 
 def onObjectClick(event, self, canvas):
 	if status.status:
@@ -181,11 +181,7 @@ def run(width= 300, height = 300):
 		canvas.create_text(width/2, 170, text="Start a new Game at the top", fill="white", font="Helvetica 16 bold ")
 		canvas.update()
 
-
-
 	root = Tk()
-	
-
 
 	canvas = Canvas(root, width = width, height = height, background = "blue")
 	canvas.pack()
@@ -207,13 +203,5 @@ def run(width= 300, height = 300):
 
 
 	root.config(menu=menubar)
-
-
-
-	
-
 	root.mainloop()
 run()
-
-
-
