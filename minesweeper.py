@@ -14,6 +14,13 @@ class Game:
 		self.l = 0
 		self.w = 0
 
+	def hardReset(self):
+		self.status = True
+		self.firstClick = True
+		self.win = 0
+		self.l = 0
+		self.w = 0
+
 status = Game()
 
 #Representation of tiles
@@ -154,9 +161,6 @@ def resetData(canvas):
 	createField(canvas, status.l, status.w)
 	setValues(status.l, status.w)
 
-def hardReset():
-	status = Game()
-
 def checkWin():
 	count = 0
 	for row in range(len(field)):
@@ -174,7 +178,7 @@ def resizeWindow(root, canvas,h, w):
 
 def run(width= 300, height = 300):
 	def createFieldWrapper(canvas, l, w):
-
+		status.hardReset()
 		if l == 16:
 			status.l = 16
 			if w == 16:
@@ -194,7 +198,7 @@ def run(width= 300, height = 300):
 			status.l = 9
 			status.w = 9
 
-		hardReset()
+		
 		resetData(canvas)
 		canvas.create_text(width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
 		canvas.update()
