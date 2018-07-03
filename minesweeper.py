@@ -13,6 +13,8 @@ class Game:
 		self.win = 0
 		self.l = 0
 		self.w = 0
+		self.message = ""
+		self.width = 0
 
 	def hardReset(self):
 		self.status = True
@@ -153,7 +155,7 @@ def onObjectClick(event, self, canvas):
 				status.status = False
 				print("You lost")
 		status.firstClick = False
-		checkWin()
+		checkWin(canvas)
 		canvas.update()
 		
 
@@ -182,15 +184,16 @@ def resetData(canvas):
 	createField(canvas, status.l, status.w)
 	setValues(status.l, status.w)
 
-def checkWin():
+def checkWin(canvas):
 	count = 0
 	for row in range(len(field)):
 		for col in range(len(field[0])):
 			if field[row][col].clickable == False:
 				count +=1
-	print(count)
 	if ((status.l * status.w) - len(mines)) == count :
-		print("You won the game")
+		canvas.delete(status.message)
+		status.message = canvas.create_text(status.width/2, 17, text="You Won!", fill="white", font="Helvetica 26 bold ")
+		canvas.update()
 		status.status = False
 
 def resizeWindow(root, canvas,h, w):
@@ -221,7 +224,8 @@ def run(width= 300, height = 300):
 
 		
 		resetData(canvas)
-		canvas.create_text(width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
+		status.width = width
+		status.message = canvas.create_text(status.width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
 		canvas.update()
 
 	def createMenu(canvas):
