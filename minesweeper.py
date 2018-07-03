@@ -11,6 +11,8 @@ class Game:
 		self.status = True
 		self.firstClick = True
 		self.win = 0
+		self.l = 0
+		self.w = 0
 
 status = Game()
 
@@ -54,9 +56,9 @@ def generateMines(l, w):
 	if w == 9:
 		makeMineLocation(10, l, w)
 	elif w == 16:
-		makesMineLocation(40, l, w)
+		makeMineLocation(40, l, w)
 	else:
-		makesMineLocation(99, l, w)
+		makeMineLocation(99, l, w)
 
 #Generates mine coordinates based on board size
 def makeMineLocation(s, l, w):
@@ -149,8 +151,11 @@ def resetData(canvas):
 	canvas.delete(ALL)
 	field.clear()
 	mines.clear()
-	createField(canvas, 9, 9)
-	setValues(9,9)
+	createField(canvas, status.l, status.w)
+	setValues(status.l, status.w)
+
+def hardReset():
+	status = Game()
 
 def checkWin():
 	count = 0
@@ -159,16 +164,39 @@ def checkWin():
 			if field[row][col].clickable == False:
 				count +=1
 	print(count)
-	if (71) == count :
+	if ((status.l * status.w) - len(mines)) == count :
 		print("You won the game")
 		status.status = False
 
+def resizeWindow(root, canvas,h, w):
+	root.geometry( str(w)+ "x" + str(h))
+	canvas.config(height = str(h), width = str(w))
+
 def run(width= 300, height = 300):
 	def createFieldWrapper(canvas, l, w):
-		canvas.delete(ALL)
+
+		if l == 16:
+			status.l = 16
+			if w == 16:
+				width = 530
+				height = 550
+				resizeWindow(root, canvas, height, width)
+				status.w = 16
+			else:
+				width = 940
+				height = 550
+				resizeWindow(root, canvas, height, width)
+				status.w = 30
+		else:
+			height = 310
+			width = 310
+			resizeWindow(root, canvas, height, width)
+			status.l = 9
+			status.w = 9
+
+		hardReset()
+		resetData(canvas)
 		canvas.create_text(width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
-		createField(canvas, l, w)
-		setValues(l, w)
 		canvas.update()
 
 	def createMenu(canvas):
@@ -192,8 +220,8 @@ def run(width= 300, height = 300):
 	menubar = Menu(root)
 	filemenu = Menu(menubar, tearoff=0)
 	filemenu.add_command(label="9x9, 10 mines", command = lambda: createFieldWrapper(canvas, 9, 9))
-	filemenu.add_command(label="16x16, 40 mines", command=onObjectClick)
-	filemenu.add_command(label="16x30, 99 mines", command=onObjectClick)
+	filemenu.add_command(label="16x16, 40 mines", command= lambda: createFieldWrapper(canvas, 16, 16))
+	filemenu.add_command(label="16x30, 99 mines", command= lambda: createFieldWrapper(canvas, 16, 30))
 	menubar.add_cascade(label="New Game", menu=filemenu)
 
 
