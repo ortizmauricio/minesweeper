@@ -169,9 +169,30 @@ def run(width= 300, height = 300):
 		setValues(9, 9)
 		canvas.update()
 	root = Tk()
-	canvas = Canvas(root, width = width, height = height)
+	
+	canvas = Canvas(root, width = width, height = height, background = "blue")
+
+	menubar = Menu(root)
+	filemenu = Menu(menubar, tearoff=0)
+	filemenu.add_command(label="9x9, 10 mines", command = createFieldWrapper(canvas))
+	filemenu.add_command(label="16x16, 40 mines", command=onObjectClick)
+	filemenu.add_command(label="16x30, 99 mines", command=onObjectClick)
+
+	
+	menubar.add_cascade(label="New Game", menu=filemenu)
+	editmenu = Menu(menubar, tearoff=0)
+	editmenu.add_command(label="Exit", command=root.quit)
+	menubar.add_cascade(label="Exit", menu=editmenu)
+
+
+	root.config(menu=menubar)
+
+
 	canvas.pack()
-	createFieldWrapper(canvas)
+	
 
 	root.mainloop()
 run()
+
+
+
