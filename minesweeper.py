@@ -153,7 +153,8 @@ def onObjectClick(event, self, canvas):
 				print(field[indexOfClick[0]][indexOfClick[1]].value)
 			else:
 				status.status = False
-				print("You lost")
+				canvas.delete(status.message)
+				status.message = canvas.create_text(status.width/2, 17, text="You Lost :( Press R to Restart", fill="white", font="Helvetica 20 bold ")
 		status.firstClick = False
 		checkWin(canvas)
 		canvas.update()
@@ -181,6 +182,7 @@ def resetData(canvas):
 	canvas.delete(ALL)
 	field.clear()
 	mines.clear()
+	status.message = canvas.create_text(status.width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
 	createField(canvas, status.l, status.w)
 	setValues(status.l, status.w)
 
@@ -222,11 +224,13 @@ def run(width= 300, height = 300):
 			status.l = 9
 			status.w = 9
 
-		
-		resetData(canvas)
 		status.width = width
-		status.message = canvas.create_text(status.width/2, 17, text="Minesweeper", fill="white", font="Helvetica 26 bold ")
+		resetData(canvas)
 		canvas.update()
+
+	def keyPressedWrapper(event, canvas):
+		if(event.char == "r"):
+			createFieldWrapper(canvas, status.l, status.w)
 
 	def createMenu(canvas):
 		canvas.delete(ALL)
@@ -257,7 +261,8 @@ def run(width= 300, height = 300):
 	exitmenu = Menu(menubar, tearoff=0)
 	exitmenu.add_command(label="Exit", command=root.quit)
 	menubar.add_cascade(label="Exit", menu=exitmenu)
-
+	
+	root.bind("<Key>", lambda event: keyPressedWrapper(event, canvas))
 	root.config(menu=menubar)
 	canvas.focus_set()
 	root.mainloop()
