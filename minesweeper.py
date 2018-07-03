@@ -1,10 +1,7 @@
 #Program starts running at run() function
-
-
 from tkinter import *
 import random
 random.seed()
-
 
 #Contains all tiles and their characteristics as objects
 field = []
@@ -161,7 +158,6 @@ def onObjectClick(event, self, canvas):
 				indexOfClick = self.index
 				while field[indexOfClick[0]][indexOfClick[1]].value == -1:
 					resetData(canvas)
-				print(field[indexOfClick[0]][indexOfClick[1]].value)
 			else:
 				status.status = False
 				canvas.delete(status.message)
